@@ -1,30 +1,49 @@
-int mousex=0,mousey=0,w,h;
-int got=0;
-void setup(){
-size(600,600);
-mousex=0;mousey=0;
-
+ArrayList<PVector> balls = new ArrayList<PVector>();
+int oX = 300;
+int oY = 580;
+int hold = -1,time=0;
+int r = 10;
+void setup() {
+  size(600, 600);
+  balls.add(new PVector(oX, oY)); 
 }
 
-void draw(){
+void draw() {
   background(255);
-  hold(); 
-  ball(w,h,got);
-}
-void ball(int x,int y,int got) {
-  if(got==1){
-    x=mouseX;y=mouseY;
-    got=0;
+  if (hold!=-1) {
+    balls.get(hold).x = mouseX;
+    balls.get(hold).y = mouseY;
   }
-  
-  ellipse(x,y,20,20);
+  for (PVector b : balls) {
+    fill(255,228,200);
+    ellipse(b.x, b.y, r * 2, r * 2);
+  }
+  fill(255, 0, 0);
+  ellipse(oX, oY, 6, 6);
+  fill(255,228,200);
+  here();
 }
-void mouseClicked(){
-  got=1;
+
+void mousePressed() {
+  PVector oBall = balls.get(time);
+  float d = dist(mouseX, mouseY, oBall.x, oBall.y);
+  if (d < r) {
+    hold = 0;
+    balls.add(0, new PVector(oX, oY));
+    time++;
+  }
 }
-void mouseReleased(){
-  got=0;
+void mouseReleased() {
+  hold = -1;
+  //if(ok%2==0)time++;
 }
-void hold(){
-  
+
+void here(){
+  fill(255,0,0);
+  textSize(20);
+  text("Turtle food->",180,585);
+}
+
+void move(){
+
 }
