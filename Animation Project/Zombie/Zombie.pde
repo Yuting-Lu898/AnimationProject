@@ -1,7 +1,7 @@
 ArrayList<PVector> balls = new ArrayList<PVector>();
 ArrayList<PVector> ball = new ArrayList<PVector>();
 int oX = 300, oY = 670;
-float tx = 0, ty = 0;
+float tx = 0, ty = 0,x1=0,y1=0;
 int hold = -1;
 int r = 10;
 int MAX_BALLS = 2;   
@@ -20,6 +20,8 @@ void draw() {
   if (hold != -1) {
     balls.get(hold).x = mouseX;
     balls.get(hold).y = mouseY;
+    x1= mouseX;
+    y1= mouseY;
   }
 
   for (PVector b : balls) {
@@ -31,6 +33,8 @@ void draw() {
   fill(255, 228, 200);
   here();
   turtle();
+  ellipse(x1,y1, 6, 6);
+   
 }
 
 void mousePressed() {
@@ -48,16 +52,9 @@ void mousePressed() {
 void mouseReleased() {
   hold = -1;
 }
-
-void here() {
-  fill(255, 0, 0);
-  textSize(20);
-  text("Turtle food->", 170, 675);
-}
-
 void turtle() {
-  if (balls.size() > 1) {
-    translate(balls.get(1).x-250, balls.get(1).y-80);
+  if (balls.size()>1) {
+    translate(balls.get(1).x-300, balls.get(1).y-200);
   } else {
     translate(0, 200);
   }
@@ -222,4 +219,9 @@ void drawLeg(float x, float y) {
   triangle(x - 18, y + 70, x - 28, y + 68, x - 22, y + 78);
   triangle(x - 10, y + 74, x - 20, y + 72, x - 14, y + 82);
   triangle(x - 2,  y + 76, x - 12, y + 74, x - 6,  y + 84);
+}
+void here() {
+  fill(255, 0, 0);
+  textSize(20);
+  text("Turtle food->", 170, 675);
 }
