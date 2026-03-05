@@ -32,9 +32,19 @@ void draw() {
   ellipse(oX, oY, 6, 6);
   fill(255, 228, 200);
   here();
-  turtle();
-  ellipse(x1,y1, 6, 6);
-   
+  if (balls.size()>1) {
+    tx=balls.get(1).x-300;
+    ty=balls.get(1).y-200;
+    if(x1<=balls.get(0).x){
+      x1=x1+(tx-balls.get(1).x)*0.001;
+      y1=y1+(ty-balls.get(1).y)*0.001;
+    }
+  } 
+  else {
+    tx=0;
+    ty=200;
+  }
+  turtle(x1,y1);
 }
 
 void mousePressed() {
@@ -52,13 +62,8 @@ void mousePressed() {
 void mouseReleased() {
   hold = -1;
 }
-void turtle() {
-  if (balls.size()>1) {
-    translate(balls.get(1).x-300, balls.get(1).y-200);
-  } else {
-    translate(0, 200);
-  }
-
+void turtle(float x,float y) {
+  translate(x,y);
   drawBackLegs();
   drawBody();
   drawLegs();
