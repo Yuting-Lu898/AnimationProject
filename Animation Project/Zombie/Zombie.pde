@@ -14,37 +14,35 @@ void setup() {
 
 void draw() {
   background(255);
-  fill(255, 228, 200);
-  ellipse(oX,oY, r * 2, r * 2);
-
-  if (hold != -1) {
+  fill(255,228,200);
+  ellipse(oX,oY,r*2,r*2);
+  if (hold!=-1) {
     balls.get(hold).x = mouseX;
     balls.get(hold).y = mouseY;
     x1= mouseX;
     y1= mouseY;
   }
 
-  for (PVector b : balls) {
-    fill(255, 228, 200);
-    ellipse(b.x, b.y, r * 2, r * 2);
+  for (PVector b:balls) {
+    fill(255,228,200);
+    ellipse(b.x,b.y,r * 2,r * 2);
   }
   fill(255, 0, 0);
-  ellipse(oX, oY, 6, 6);
-  fill(255, 228, 200);
+  ellipse(oX,oY,6,6);
+  fill(255,228,200);
   here();
   if (balls.size()>1) {
     tx=balls.get(1).x-300;
     ty=balls.get(1).y-200;
-    if(x1<=balls.get(0).x){
-      x1=x1+(tx-balls.get(1).x)*0.001;
-      y1=y1+(ty-balls.get(1).y)*0.001;
+    if(x1<=balls.get(1).x){
+      x1=x1+(tx-balls.get(1).x)*0.01;
+      y1=y1+(ty-balls.get(1).y)*0.01;
+      turtle(x1,y1);
+    }
+    else {
+      turtle(balls.get(0).x,balls.get(0).y);  
     }
   } 
-  else {
-    tx=0;
-    ty=200;
-  }
-  turtle(x1,y1);
 }
 
 void mousePressed() {
@@ -63,6 +61,7 @@ void mouseReleased() {
   hold = -1;
 }
 void turtle(float x,float y) {
+  pushMatrix();
   translate(x,y);
   drawBackLegs();
   drawBody();
@@ -70,6 +69,7 @@ void turtle(float x,float y) {
   drawFace(360, 225);
   drawEyes();
   drawHelmet();
+  popMatrix();
 }
 
 // body
