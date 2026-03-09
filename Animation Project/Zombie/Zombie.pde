@@ -1,10 +1,12 @@
 ArrayList<PVector> balls = new ArrayList<PVector>();
 ArrayList<PVector> ball = new ArrayList<PVector>();
+ArrayList<PVector> turtle = new ArrayList<PVector>();
 int oX = 300, oY = 670;
 float tx = 0, ty = 0,x1=0,y1=0;
 int hold = -1;
 int r = 10;
 int MAX_BALLS = 2;   
+int move=0;
 
 void setup() {
   size(800, 700);
@@ -40,12 +42,13 @@ void draw() {
       turtle(x1,y1);
     }
     else {
-      turtle(balls.get(0).x,balls.get(0).y);  
+      turtle(ball.get(0).x,ball.get(0).y);  
     }
   } 
 }
 
 void mousePressed() {
+  move=0;
   PVector oBall = ball.get(0); 
   float d = dist(mouseX, mouseY, oBall.x, oBall.y);
   if (d < r) {
@@ -59,6 +62,7 @@ void mousePressed() {
 
 void mouseReleased() {
   hold = -1;
+  move=1;
 }
 void turtle(float x,float y) {
   pushMatrix();
