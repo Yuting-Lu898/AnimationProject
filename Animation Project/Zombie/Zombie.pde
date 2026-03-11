@@ -1,81 +1,109 @@
 ArrayList<PVector> balls = new ArrayList<PVector>();
-ArrayList<PVector> ball = new ArrayList<PVector>();
-ArrayList<PVector> turtle = new ArrayList<PVector>();
+
 int oX = 300, oY = 670;
-float tx = 0, ty = 0,x1=0,y1=0;
+
+float turtleX = 0;
+float turtleY = 200;
+
 int hold = -1;
 int r = 10;
-int MAX_BALLS = 2;   
-int move=0;
+
+boolean released = false;
+
+int MAX_BALLS = 2;
 
 void setup() {
-  size(800, 700);
-  balls.add(new PVector(oX, oY)); 
-  ball.add(new PVector(oX, oY)); 
+  size(800,700);
+
+  balls.add(new PVector(oX,oY));
 }
 
 void draw() {
+
   background(255);
+
+  // food origin
   fill(255,228,200);
   ellipse(oX,oY,r*2,r*2);
-  if (hold!=-1) {
-    balls.get(hold).x = mouseX;
-    balls.get(hold).y = mouseY;
-    x1= mouseX;
-    y1= mouseY;
+
+  // dragging
+  if(hold!=-1){
+    balls.get(0).x = mouseX;
+    balls.get(0).y = mouseY;
   }
 
-  for (PVector b:balls) {
+  // draw balls
+  for(PVector b:balls){
     fill(255,228,200);
-    ellipse(b.x,b.y,r * 2,r * 2);
+    ellipse(b.x,b.y,r*2,r*2);
   }
-  fill(255, 0, 0);
+
+  fill(255,0,0);
   ellipse(oX,oY,6,6);
-  fill(255,228,200);
+
   here();
-  if (balls.size()>1) {
-    tx=balls.get(1).x-300;
-    ty=balls.get(1).y-200;
-    if(x1<=balls.get(1).x){
-      x1=x1+(tx-balls.get(1).x)*0.01;
-      y1=y1+(ty-balls.get(1).y)*0.01;
-      turtle(x1,y1);
+
+  // turtle move
+  if(balls.size()>1 && released){
+
+    float targetX = balls.get(1).x - 300;
+    float targetY = balls.get(1).y - 200;
+
+    turtleX += (targetX - turtleX) * 0.05;
+    turtleY += (targetY - turtleY) * 0.05;
+
+    float d = dist(turtleX+300,turtleY+200,
+                   balls.get(1).x,balls.get(1).y);
+
+    if(d < 20){
+      released = false;
+
+      if(balls.size()>1){
+        balls.remove(1);
+      }
     }
-    else {
-      turtle(ball.get(0).x,ball.get(0).y);  
-    }
-  } 
+  }
+
+  turtle(turtleX,turtleY);
 }
 
-void mousePressed() {
-  move=0;
-  PVector oBall = ball.get(0); 
-  float d = dist(mouseX, mouseY, oBall.x, oBall.y);
-  if (d < r) {
-    hold = 0;
-    balls.add(0, new PVector(oX, oY));   
-    if (balls.size() > MAX_BALLS) {     
-      balls.remove(balls.size() - 1);
+void mousePressed(){
+
+  float d = dist(mouseX,mouseY,oX,oY);
+
+  if(d<r){
+
+    hold=0;
+    released=false;
+
+    balls.add(0,new PVector(oX,oY));
+
+    if(balls.size()>MAX_BALLS){
+      balls.remove(balls.size()-1);
     }
   }
 }
 
-void mouseReleased() {
-  hold = -1;
-  move=1;
+void mouseReleased(){
+  hold=-1;
+  released=true;
 }
-void turtle(float x,float y) {
+
+void turtle(float x,float y){
+
   pushMatrix();
+
   translate(x,y);
+
   drawBackLegs();
   drawBody();
   drawLegs();
-  drawFace(360, 225);
+  drawFace(360,225);
   drawEyes();
   drawHelmet();
+
   popMatrix();
 }
-
 // body
 void drawBody() {
   stroke(0);
